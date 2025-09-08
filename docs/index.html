@@ -424,6 +424,12 @@
             });
         }
 
+        // Helper: Schengen membership
+        function isSchengenCountry(countryCode) {
+            const schengenCountries = new Set(['AT','BE','CZ','DE','DK','EE','ES','FI','FR','GR','HR','HU','IS','IT','LI','LT','LU','LV','MT','NL','NO','PL','PT','SE','SI','SK','CH']);
+            return schengenCountries.has(countryCode);
+        }
+
         // Show document checklist
         function showDocumentChecklist() {
             const homeCountry = document.getElementById('homeCountry').value;
@@ -431,6 +437,15 @@
             const purpose = document.getElementById('purpose').value;
             
             if (!homeCountry || !destinationCountry || !purpose) {
+                return;
+            }
+
+            // Skip checklist for intra-Schengen travel
+            if (isSchengenCountry(homeCountry) && isSchengenCountry(destinationCountry)) {
+                const checklistSection = document.getElementById('documentChecklistSection');
+                if (checklistSection) {
+                    checklistSection.style.display = 'none';
+                }
                 return;
             }
             
@@ -586,8 +601,15 @@
                 throw new Error('Invalid country selection');
             }
             
-            // Get visa requirements for this combination
-            const requirements = getVisaRequirements(data.homeCountry, data.destinationCountry, data.purpose);
+            // Intra-Schengen travel: visa not required
+            const intraSchengen = isSchengenCountry(data.homeCountry) && isSchengenCountry(data.destinationCountry);
+            let requirements;
+            if (intraSchengen) {
+                requirements = { base: [], purposeSpecific: [], countrySpecific: [], additional: [] };
+            } else {
+                // Get visa requirements for this combination
+                requirements = getVisaRequirements(data.homeCountry, data.destinationCountry, data.purpose);
+            }
             
             // Calculate approval chances based on documents
             const approvalChance = calculateApprovalChance(data.homeCountry, data.destinationCountry, data.purpose, data.duration, checkedDocuments, requirements);
@@ -601,9 +623,10 @@
                 duration: data.duration,
                 requirements,
                 approvalChance,
-                processingTime: getProcessingTime(data.destinationCountry, data.purpose),
-                visaType: getVisaType(data.purpose, data.duration),
-                checkedDocuments: checkedDocuments
+                processingTime: intraSchengen ? { standard: '-', expedited: '-' } : getProcessingTime(data.destinationCountry, data.purpose),
+                visaType: intraSchengen ? 'Visa not required (Schengen area)' : getVisaType(data.purpose, data.duration),
+                checkedDocuments: checkedDocuments,
+                intraSchengen
             };
         }
 
@@ -861,14 +884,21 @@
             
             // Approval chances section removed
             
-            // Update document requirements
-            updateDocumentRequirements(results.requirements, results.checkedDocuments);
+            // Update document and filing sections visibility
+            const docReqSection = document.querySelector('.document-requirements');
+            const filingSection = document.getElementById('filingAppointmentSection');
+            const checklistSection = document.getElementById('documentChecklistSection');
 
-            // Update where to file and appointment info
-            updateFilingAppointmentSection(results);
-            
-            // Render checklist at the end after results and keep scroll to it
-            showDocumentChecklist();
+            if (results.intraSchengen) {
+                if (docReqSection) docReqSection.style.display = 'none';
+                if (filingSection) filingSection.style.display = 'none';
+                if (checklistSection) checklistSection.style.display = 'none';
+            } else {
+                if (docReqSection) docReqSection.style.display = 'block';
+                updateDocumentRequirements(results.requirements, results.checkedDocuments);
+                updateFilingAppointmentSection(results);
+                showDocumentChecklist();
+            }
             
             // Show results section
             resultsSection.style.display = 'block';
