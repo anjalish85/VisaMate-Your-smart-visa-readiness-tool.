@@ -80,6 +80,8 @@
                             </div>
                         </div>
 
+                        
+
                         <button type="submit" class="submit-btn">
                             <i class="fas fa-search"></i>
                             Check Visa Requirements
@@ -91,19 +93,7 @@
             <!-- Results Section -->
             <section id="resultsSection" class="results-section" style="display: none;">
                 <div class="results-container">
-                    <!-- Approval Chances -->
-                    <div class="approval-chances">
-                        <h3>Visa Approval Chances</h3>
-                        <div class="chance-meter">
-                            <div class="chance-circle">
-                                <div class="chance-percentage" id="approvalPercentage">0%</div>
-                                <div class="chance-label">Approval Chance</div>
-                            </div>
-                            <div class="chance-description" id="chanceDescription">
-                                Based on your profile and destination
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <!-- Visa Information -->
                     <div class="visa-info">
@@ -192,6 +182,43 @@
                         </div>
                     </div>
 
+                    <!-- Where to Apply & Appointments -->
+                    <div id="filingAppointmentSection" class="filing-appointment-section" style="display: none;">
+                        <h3>Where to Apply & Book Appointment</h3>
+                        <div class="tips-grid">
+                            <div class="tip-card">
+                                <i class="fas fa-building"></i>
+                                <h4>Where to file the application</h4>
+                                <ul id="whereToApplyList" class="requirements-list">
+                                    <li>Official embassy/consulate of <span id="faDestinationA">-</span></li>
+                                    <li>Authorized visa application center (e.g., VFS Global, TLScontact, BLS)</li>
+                                    <li>Official online portal if available</li>
+                                </ul>
+                                <div class="quick-links" style="margin-top: 0.75rem;">
+                                    <a id="officialPortalLink" href="#" target="_blank" rel="noopener" class="submit-btn" style="display:inline-block; padding:0.5rem 0.75rem; font-size:0.9rem;">Open official portal</a>
+                                    <a id="applySearchLink" href="#" target="_blank" rel="noopener" class="submit-btn" style="display:inline-block; padding:0.5rem 0.75rem; font-size:0.9rem; background:#4a5568;">Search embassy application</a>
+                                </div>
+                            </div>
+                            <div class="tip-card">
+                                <i class="fas fa-calendar-day"></i>
+                                <h4>How to book an appointment</h4>
+                                <ul class="requirements-list">
+                                    <li>Create an account on the official portal or partner center</li>
+                                    <li>Complete/submit the application and pay applicable fees</li>
+                                    <li>Choose a VAC/consulate and select an available date</li>
+                                    <li>Bring originals and copies of required documents</li>
+                                </ul>
+                                <div class="quick-links" style="margin-top: 0.75rem;">
+                                    <a id="appointmentPortalLink" href="#" target="_blank" rel="noopener" class="submit-btn" style="display:inline-block; padding:0.5rem 0.75rem; font-size:0.9rem;">Open appointment portal</a>
+                                    <a id="appointmentSearchLink" href="#" target="_blank" rel="noopener" class="submit-btn" style="display:inline-block; padding:0.5rem 0.75rem; font-size:0.9rem; background:#4a5568;">Search appointment</a>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.9rem; color:#4a5568; margin-top: 0.75rem;">
+                            Note: Links are provided for convenience. Always verify details on the official government or authorized provider websites.
+                        </p>
+                    </div>
+
                     <!-- Tips and Recommendations -->
                     <div class="tips-section">
                         <h3>Tips & Recommendations</h3>
@@ -228,6 +255,17 @@
                             </div>
                         </div>
                     </div>
+                    
+                    
+
+                    <!-- Document Checklist Section (moved to end) -->
+                    <div id="documentChecklistSection" class="document-checklist-section" style="display: none;">
+                        <h3>Document Checklist</h3>
+                        <p class="checklist-description">Please check the documents you currently have. This will help calculate more accurate approval chances.</p>
+                        <div id="documentChecklist" class="document-checklist">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
@@ -235,7 +273,7 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
-                <p>&copy; 2024 Visa Portal. All rights reserved.</p>
+                <p>&copy; 2025 Anjali Shaw. All rights reserved.</p>
                 <p class="disclaimer">
                     <i class="fas fa-exclamation-triangle"></i>
                     This information is for guidance only. Always check with official sources for the most current requirements.
@@ -244,14 +282,883 @@
         </footer>
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-        <div class="loading-spinner">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Checking visa requirements...</p>
-        </div>
-    </div>
+    <script>
+        // Visa data embedded in the HTML for standalone functionality
+        const visaData = {
+            countries: [
+                // North America
+                { code: 'US', name: 'United States', region: 'North America', visaRequired: true },
+                { code: 'CA', name: 'Canada', region: 'North America', visaRequired: true },
+                { code: 'MX', name: 'Mexico', region: 'North America', visaRequired: true },
+                
+                // Europe
+                { code: 'UK', name: 'United Kingdom', region: 'Europe', visaRequired: true },
+                { code: 'DE', name: 'Germany', region: 'Europe', visaRequired: true },
+                { code: 'FR', name: 'France', region: 'Europe', visaRequired: true },
+                { code: 'IT', name: 'Italy', region: 'Europe', visaRequired: true },
+                { code: 'ES', name: 'Spain', region: 'Europe', visaRequired: true },
+                { code: 'NL', name: 'Netherlands', region: 'Europe', visaRequired: true },
+                { code: 'CH', name: 'Switzerland', region: 'Europe', visaRequired: true },
+                { code: 'AT', name: 'Austria', region: 'Europe', visaRequired: true },
+                { code: 'SE', name: 'Sweden', region: 'Europe', visaRequired: true },
+                { code: 'NO', name: 'Norway', region: 'Europe', visaRequired: true },
+                { code: 'DK', name: 'Denmark', region: 'Europe', visaRequired: true },
+                { code: 'FI', name: 'Finland', region: 'Europe', visaRequired: true },
+                
+                // Asia
+                { code: 'JP', name: 'Japan', region: 'Asia', visaRequired: true },
+                { code: 'CN', name: 'China', region: 'Asia', visaRequired: true },
+                { code: 'IN', name: 'India', region: 'Asia', visaRequired: true },
+                { code: 'SG', name: 'Singapore', region: 'Asia', visaRequired: true },
+                { code: 'KR', name: 'South Korea', region: 'Asia', visaRequired: true },
+                { code: 'TH', name: 'Thailand', region: 'Asia', visaRequired: true },
+                { code: 'MY', name: 'Malaysia', region: 'Asia', visaRequired: true },
+                { code: 'ID', name: 'Indonesia', region: 'Asia', visaRequired: true },
+                { code: 'PH', name: 'Philippines', region: 'Asia', visaRequired: true },
+                { code: 'VN', name: 'Vietnam', region: 'Asia', visaRequired: true },
+                { code: 'HK', name: 'Hong Kong', region: 'Asia', visaRequired: false },
+                { code: 'TW', name: 'Taiwan', region: 'Asia', visaRequired: true },
+                
+                // Oceania
+                { code: 'AU', name: 'Australia', region: 'Oceania', visaRequired: true },
+                { code: 'NZ', name: 'New Zealand', region: 'Oceania', visaRequired: true },
+                
+                // South America
+                { code: 'BR', name: 'Brazil', region: 'South America', visaRequired: true },
+                { code: 'AR', name: 'Argentina', region: 'South America', visaRequired: true },
+                { code: 'CL', name: 'Chile', region: 'South America', visaRequired: true },
+                { code: 'CO', name: 'Colombia', region: 'South America', visaRequired: true },
+                { code: 'PE', name: 'Peru', region: 'South America', visaRequired: true },
+                
+                // Africa
+                { code: 'ZA', name: 'South Africa', region: 'Africa', visaRequired: true },
+                { code: 'EG', name: 'Egypt', region: 'Africa', visaRequired: true },
+                { code: 'NG', name: 'Nigeria', region: 'Africa', visaRequired: true },
+                { code: 'KE', name: 'Kenya', region: 'Africa', visaRequired: true },
+                { code: 'MA', name: 'Morocco', region: 'Africa', visaRequired: true },
+                { code: 'GH', name: 'Ghana', region: 'Africa', visaRequired: true },
+                
+                // Middle East
+                { code: 'AE', name: 'United Arab Emirates', region: 'Middle East', visaRequired: true },
+                { code: 'SA', name: 'Saudi Arabia', region: 'Middle East', visaRequired: true },
+                { code: 'QA', name: 'Qatar', region: 'Middle East', visaRequired: true },
+                { code: 'KW', name: 'Kuwait', region: 'Middle East', visaRequired: true },
+                { code: 'BH', name: 'Bahrain', region: 'Middle East', visaRequired: true },
+                { code: 'OM', name: 'Oman', region: 'Middle East', visaRequired: true },
+                { code: 'JO', name: 'Jordan', region: 'Middle East', visaRequired: true },
+                { code: 'LB', name: 'Lebanon', region: 'Middle East', visaRequired: true },
+                { code: 'TR', name: 'Turkey', region: 'Middle East', visaRequired: true },
+                { code: 'IL', name: 'Israel', region: 'Middle East', visaRequired: true },
+                
+                // Other
+                { code: 'RU', name: 'Russia', region: 'Europe/Asia', visaRequired: true },
+                { code: 'PK', name: 'Pakistan', region: 'Asia', visaRequired: true },
+                { code: 'BD', name: 'Bangladesh', region: 'Asia', visaRequired: true },
+                { code: 'LK', name: 'Sri Lanka', region: 'Asia', visaRequired: true },
+                { code: 'NP', name: 'Nepal', region: 'Asia', visaRequired: true },
+                { code: 'BT', name: 'Bhutan', region: 'Asia', visaRequired: true },
+                { code: 'MV', name: 'Maldives', region: 'Asia', visaRequired: true },
+                { code: 'AF', name: 'Afghanistan', region: 'Asia', visaRequired: true },
+                { code: 'IR', name: 'Iran', region: 'Middle East', visaRequired: true },
+                { code: 'IQ', name: 'Iraq', region: 'Middle East', visaRequired: true }
+            ]
+        };
 
-    <script src="script.js"></script>
+        // Global variables
+        let countries = [];
+        let currentResults = null;
+
+        // DOM elements
+        const visaForm = document.getElementById('visaForm');
+        const resultsSection = document.getElementById('resultsSection');
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCountries();
+            setupEventListeners();
+        });
+
+        // Load countries
+        function loadCountries() {
+            countries = visaData.countries;
+            populateCountrySelects();
+        }
+
+        // Populate country select elements
+        function populateCountrySelects() {
+            const homeCountrySelect = document.getElementById('homeCountry');
+            const destinationCountrySelect = document.getElementById('destinationCountry');
+            
+            // Sort countries alphabetically
+            const sortedCountries = countries.sort((a, b) => a.name.localeCompare(b.name));
+            
+            // Populate both selects
+            sortedCountries.forEach(country => {
+                const option1 = new Option(country.name, country.code);
+                const option2 = new Option(country.name, country.code);
+                
+                homeCountrySelect.add(option1);
+                destinationCountrySelect.add(option2);
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Form submission
+            visaForm.addEventListener('submit', handleFormSubmit);
+            
+            // Tab switching
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+            
+            // Form validation
+            const formInputs = document.querySelectorAll('select');
+            formInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    validateForm();
+                });
+            });
+        }
+
+        // Show document checklist
+        function showDocumentChecklist() {
+            const homeCountry = document.getElementById('homeCountry').value;
+            const destinationCountry = document.getElementById('destinationCountry').value;
+            const purpose = document.getElementById('purpose').value;
+            
+            if (!homeCountry || !destinationCountry || !purpose) {
+                return;
+            }
+            
+            const requirements = getVisaRequirements(homeCountry, destinationCountry, purpose);
+            const allDocuments = [
+                ...requirements.base,
+                ...requirements.purposeSpecific,
+                ...requirements.countrySpecific,
+                ...requirements.additional
+            ];
+            
+            const checklistSection = document.getElementById('documentChecklistSection');
+            const checklistContainer = document.getElementById('documentChecklist');
+            
+            checklistContainer.innerHTML = '';
+            
+            allDocuments.forEach((doc, index) => {
+                const docItem = document.createElement('div');
+                docItem.className = 'document-item';
+                docItem.innerHTML = `
+                    <input type="checkbox" id="doc_${index}" data-document="${doc}">
+                    <label for="doc_${index}">${doc}</label>
+                `;
+                
+                // Add event listener for checkbox change
+                const checkbox = docItem.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function() {
+                    updateDocumentProgress();
+                    updateApprovalChancePreview();
+                });
+                
+                checklistContainer.appendChild(docItem);
+            });
+            
+            // Add progress bar
+            const progressDiv = document.createElement('div');
+            progressDiv.className = 'checklist-progress';
+            progressDiv.innerHTML = `
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText">0 of ${allDocuments.length} documents selected</div>
+            `;
+            checklistContainer.appendChild(progressDiv);
+            
+            checklistSection.style.display = 'block';
+        }
+
+        // Update document progress
+        function updateDocumentProgress() {
+            const checkboxes = document.querySelectorAll('#documentChecklist input[type="checkbox"]');
+            const checkedBoxes = document.querySelectorAll('#documentChecklist input[type="checkbox"]:checked');
+            const total = checkboxes.length;
+            const checked = checkedBoxes.length;
+            const percentage = (checked / total) * 100;
+            
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressFill) {
+                progressFill.style.width = `${percentage}%`;
+            }
+            if (progressText) {
+                progressText.textContent = `${checked} of ${total} documents selected (${Math.round(percentage)}%)`;
+            }
+            
+            // Update visual state of document items
+            checkboxes.forEach(checkbox => {
+                const docItem = checkbox.closest('.document-item');
+                if (checkbox.checked) {
+                    docItem.classList.add('checked');
+                } else {
+                    docItem.classList.remove('checked');
+                }
+            });
+        }
+
+        // Update approval chance preview
+        function updateApprovalChancePreview() {
+            const checkboxes = document.querySelectorAll('#documentChecklist input[type="checkbox"]');
+            const checkedBoxes = document.querySelectorAll('#documentChecklist input[type="checkbox"]:checked');
+            const total = checkboxes.length;
+            const checked = checkedBoxes.length;
+            const documentScore = (checked / total) * 100;
+            
+            // Show preview in the checklist section
+            let previewDiv = document.getElementById('approvalPreview');
+            if (!previewDiv) {
+                previewDiv = document.createElement('div');
+                previewDiv.id = 'approvalPreview';
+                previewDiv.style.cssText = `
+                    margin: 1rem auto 0;
+                    padding: 1rem;
+                    max-width: 520px;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    border-radius: 10px;
+                    text-align: center;
+                `;
+                document.getElementById('documentChecklist').appendChild(previewDiv);
+            }
+            
+            const baseChance = 50; // Base chance without documents
+            const documentBonus = (documentScore / 100) * 40; // Up to 40% bonus for having documents
+            const previewChance = Math.min(Math.round(baseChance + documentBonus), 95);
+            
+            previewDiv.innerHTML = `
+                <div style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">
+                    Preview Approval Chance: ${previewChance}%
+                </div>
+                <div style="font-size: 0.9rem; opacity: 0.9;">
+                    Based on ${checked} of ${total} required documents
+                </div>
+            `;
+        }
+
+        // Handle form submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            const formData = new FormData(visaForm);
+            const data = {
+                homeCountry: formData.get('homeCountry'),
+                destinationCountry: formData.get('destinationCountry'),
+                purpose: formData.get('purpose'),
+                duration: formData.get('duration')
+            };
+            
+            // Get checked documents
+            const checkedDocuments = getCheckedDocuments();
+            
+            const results = calculateVisaRequirements(data, checkedDocuments);
+            currentResults = results;
+            displayResults(results);
+        }
+
+        // Get checked documents
+        function getCheckedDocuments() {
+            const checkboxes = document.querySelectorAll('#documentChecklist input[type="checkbox"]:checked');
+            return Array.from(checkboxes).map(checkbox => checkbox.dataset.document);
+        }
+
+        // Calculate visa requirements (standalone version)
+        function calculateVisaRequirements(data, checkedDocuments = []) {
+            const homeCountryData = countries.find(c => c.code === data.homeCountry);
+            const destinationCountryData = countries.find(c => c.code === data.destinationCountry);
+            
+            if (!homeCountryData || !destinationCountryData) {
+                throw new Error('Invalid country selection');
+            }
+            
+            // Get visa requirements for this combination
+            const requirements = getVisaRequirements(data.homeCountry, data.destinationCountry, data.purpose);
+            
+            // Calculate approval chances based on documents
+            const approvalChance = calculateApprovalChance(data.homeCountry, data.destinationCountry, data.purpose, data.duration, checkedDocuments, requirements);
+            
+            return {
+                homeCountry: homeCountryData.name,
+                destinationCountry: destinationCountryData.name,
+                homeCountryCode: homeCountryData.code,
+                destinationCountryCode: destinationCountryData.code,
+                purpose: data.purpose,
+                duration: data.duration,
+                requirements,
+                approvalChance,
+                processingTime: getProcessingTime(data.destinationCountry, data.purpose),
+                visaType: getVisaType(data.purpose, data.duration),
+                checkedDocuments: checkedDocuments
+            };
+        }
+
+        function getVisaRequirements(homeCountry, destinationCountry, purpose) {
+            const baseRequirements = [
+                'Valid passport (minimum 6 months validity)',
+                'Completed visa application form',
+                'Recent passport-sized photographs',
+                'Proof of financial means',
+                'Travel itinerary'
+            ];
+            
+            const purposeSpecificRequirements = {
+                'tourism': [
+                    'Hotel reservations or accommodation proof',
+                    'Travel insurance',
+                    'Return flight tickets'
+                ],
+                'business': [
+                    'Business invitation letter',
+                    'Company registration documents',
+                    'Bank statements (last 3 months)',
+                    'Employment letter'
+                ],
+                'study': [
+                    'University acceptance letter',
+                    'Proof of tuition payment',
+                    'Academic transcripts',
+                    'Language proficiency test results'
+                ],
+                'work': [
+                    'Job offer letter',
+                    'Work permit',
+                    'Educational certificates',
+                    'Professional experience documents'
+                ],
+                'family': [
+                    'Family invitation letter',
+                    'Proof of relationship',
+                    'Host\'s financial documents',
+                    'Accommodation proof'
+                ]
+            };
+            
+            const countrySpecificRequirements = getCountrySpecificRequirements(destinationCountry);
+            
+            return {
+                base: baseRequirements,
+                purposeSpecific: purposeSpecificRequirements[purpose] || [],
+                countrySpecific: countrySpecificRequirements,
+                additional: getAdditionalRequirements(homeCountry, destinationCountry)
+            };
+        }
+
+        function getCountrySpecificRequirements(destinationCountry) {
+            const requirements = {
+                'US': [
+                    'DS-160 confirmation page',
+                    'Interview appointment confirmation',
+                    'Previous travel history'
+                ],
+                'UK': [
+                    'Biometric residence permit (if applicable)',
+                    'Tuberculosis test results (if required)',
+                    'Financial evidence'
+                ],
+                'CA': [
+                    'Biometric information',
+                    'Medical examination (if required)',
+                    'Police clearance certificate'
+                ],
+                'AU': [
+                    'Health insurance',
+                    'Character assessment',
+                    'Genuine temporary entrant statement'
+                ],
+                'DE': [
+                    'Travel health insurance',
+                    'Proof of accommodation',
+                    'Coverage of living expenses'
+                ],
+                'FR': [
+                    'Travel insurance (minimum €30,000)',
+                    'Proof of accommodation',
+                    'Financial means proof'
+                ],
+                'JP': [
+                    'Certificate of eligibility (for work/study)',
+                    'Guarantor documents',
+                    'Reason for visit'
+                ],
+                'SG': [
+                    'SG Arrival Card',
+                    'Yellow fever vaccination (if applicable)',
+                    'Proof of sufficient funds'
+                ]
+            };
+            
+            return requirements[destinationCountry] || [];
+        }
+
+        function getAdditionalRequirements(homeCountry, destinationCountry) {
+            const additional = [];
+            
+            // Add requirements based on country relationships
+            if (['US', 'CA', 'UK', 'AU', 'NZ'].includes(destinationCountry)) {
+                additional.push('English language proficiency proof');
+            }
+            
+            if (['DE', 'FR', 'IT', 'ES', 'NL'].includes(destinationCountry)) {
+                additional.push('Schengen visa application');
+            }
+            
+            if (destinationCountry === 'US' && homeCountry !== 'US') {
+                additional.push('ESTA authorization (for visa waiver countries)');
+            }
+            
+            return additional;
+        }
+
+        function calculateApprovalChance(homeCountry, destinationCountry, purpose, duration, checkedDocuments = [], requirements = null) {
+            let baseChance = 30; // Lower base chance without documents
+            
+            // Adjust based on home country
+            const countryFactors = {
+                'US': 85, 'CA': 80, 'UK': 75, 'AU': 75, 'DE': 70,
+                'FR': 70, 'JP': 65, 'SG': 60, 'IN': 50, 'CN': 45,
+                'BR': 55, 'MX': 60, 'RU': 40, 'NG': 35, 'PK': 30
+            };
+            
+            baseChance = countryFactors[homeCountry] || 30;
+            
+            // Adjust based on destination country
+            const destinationFactors = {
+                'US': 0.7, 'CA': 0.8, 'UK': 0.75, 'AU': 0.8, 'DE': 0.85,
+                'FR': 0.85, 'JP': 0.6, 'SG': 0.9, 'IN': 0.95, 'CN': 0.5
+            };
+            
+            baseChance *= (destinationFactors[destinationCountry] || 0.7);
+            
+            // Adjust based on purpose
+            const purposeFactors = {
+                'tourism': 1.0,
+                'business': 0.9,
+                'study': 0.8,
+                'work': 0.6,
+                'family': 0.95
+            };
+            
+            baseChance *= (purposeFactors[purpose] || 0.8);
+            
+            // Adjust based on duration
+            if (duration === 'short') {
+                baseChance *= 1.1;
+            } else if (duration === 'long') {
+                baseChance *= 0.9;
+            }
+            
+            // Document-based adjustments
+            if (checkedDocuments && checkedDocuments.length > 0 && requirements) {
+                const allRequiredDocs = [
+                    ...requirements.base,
+                    ...requirements.purposeSpecific,
+                    ...requirements.countrySpecific,
+                    ...requirements.additional
+                ];
+                
+                const documentScore = (checkedDocuments.length / allRequiredDocs.length) * 100;
+                
+                // Document bonus: up to 50% increase based on document completeness
+                const documentBonus = (documentScore / 100) * 50;
+                baseChance += documentBonus;
+                
+                // Bonus for having critical documents
+                const criticalDocs = requirements.base; // Basic requirements are most critical
+                const criticalDocsOwned = checkedDocuments.filter(doc => criticalDocs.includes(doc)).length;
+                const criticalBonus = (criticalDocsOwned / criticalDocs.length) * 20;
+                baseChance += criticalBonus;
+                
+                // Penalty for missing critical documents
+                if (criticalDocsOwned < criticalDocs.length) {
+                    const missingPenalty = ((criticalDocs.length - criticalDocsOwned) / criticalDocs.length) * 30;
+                    baseChance -= missingPenalty;
+                }
+            }
+            
+            return Math.min(Math.max(Math.round(baseChance), 5), 95);
+        }
+
+        function getProcessingTime(destinationCountry, purpose) {
+            const processingTimes = {
+                'US': { standard: '15-30 days', expedited: '3-5 days' },
+                'UK': { standard: '15-30 days', expedited: '5-10 days' },
+                'CA': { standard: '14-30 days', expedited: '1-3 days' },
+                'AU': { standard: '15-30 days', expedited: '2-5 days' },
+                'DE': { standard: '10-15 days', expedited: '3-5 days' },
+                'FR': { standard: '10-15 days', expedited: '2-3 days' },
+                'JP': { standard: '5-10 days', expedited: '1-2 days' },
+                'SG': { standard: '3-7 days', expedited: '1-2 days' }
+            };
+            
+            return processingTimes[destinationCountry] || { standard: '10-20 days', expedited: '3-5 days' };
+        }
+
+        function getVisaType(purpose, duration) {
+            const visaTypes = {
+                'tourism': duration === 'short' ? 'Tourist Visa (B-2)' : 'Long-term Tourist Visa',
+                'business': duration === 'short' ? 'Business Visa (B-1)' : 'Business Visa (Long-term)',
+                'study': 'Student Visa (F-1)',
+                'work': 'Work Visa (H-1B)',
+                'family': 'Family Visa'
+            };
+            
+            return visaTypes[purpose] || 'General Visa';
+        }
+
+        // Validate form
+        function validateForm() {
+            const requiredFields = ['homeCountry', 'destinationCountry', 'purpose', 'duration'];
+            let isValid = true;
+            
+            requiredFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                if (!field.value) {
+                    field.style.borderColor = '#e53e3e';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#e2e8f0';
+                }
+            });
+            
+            // Check if home and destination countries are the same
+            const homeCountry = document.getElementById('homeCountry').value;
+            const destinationCountry = document.getElementById('destinationCountry').value;
+            
+            if (homeCountry && destinationCountry && homeCountry === destinationCountry) {
+                showError('Home country and destination country cannot be the same.');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        // Display results
+        function displayResults(results) {
+            // Update basic information
+            document.getElementById('homeCountryName').textContent = results.homeCountry;
+            document.getElementById('destinationCountryName').textContent = results.destinationCountry;
+            document.getElementById('purposeName').textContent = getPurposeName(results.purpose);
+            document.getElementById('durationName').textContent = getDurationName(results.duration);
+            document.getElementById('visaType').textContent = results.visaType;
+            document.getElementById('processingTime').textContent = `${results.processingTime.standard} (Standard) / ${results.processingTime.expedited} (Expedited)`;
+            
+            // Approval chances section removed
+            
+            // Update document requirements
+            updateDocumentRequirements(results.requirements, results.checkedDocuments);
+
+            // Update where to file and appointment info
+            updateFilingAppointmentSection(results);
+            
+            // Render checklist at the end after results and keep scroll to it
+            showDocumentChecklist();
+            
+            // Show results section
+            resultsSection.style.display = 'block';
+            resultsSection.classList.add('fade-in');
+            
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Populate Where to Apply & Appointment section
+        function updateFilingAppointmentSection(results) {
+            const section = document.getElementById('filingAppointmentSection');
+            const destName = results.destinationCountry;
+            const destCode = results.destinationCountryCode;
+
+            // Known official portals (sample set)
+            const officialPortals = {
+                'US': { portal: 'https://ceac.state.gov/ceac/', appointment: 'https://www.ustraveldocs.com/' },
+                'UK': { portal: 'https://www.gov.uk/apply-to-come-to-the-uk', appointment: 'https://www.gov.uk/visa-processing-times' },
+                'CA': { portal: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada.html', appointment: 'https://www.vfsglobal.ca/canada/' },
+                'AU': { portal: 'https://online.immi.gov.au/', appointment: 'https://www.vfsglobal.com/en/individuals/index.html' },
+                'DE': { portal: 'https://videx.diplo.de/', appointment: 'https://www.vfsglobal.com/en/individuals/index.html' },
+                'FR': { portal: 'https://france-visas.gouv.fr/', appointment: 'https://france-visas.gouv.fr/web/france-visas/visa-application' },
+                'SG': { portal: 'https://www.ica.gov.sg/', appointment: 'https://www.ica.gov.sg/' },
+                'JP': { portal: 'https://www.mofa.go.jp/j_info/visit/visa/index.html', appointment: 'https://www.vfsglobal.com/en/individuals/index.html' }
+            };
+
+            const portal = officialPortals[destCode]?.portal || null;
+            const appt = officialPortals[destCode]?.appointment || null;
+
+            // Build smart search links
+            const encodedDest = encodeURIComponent(destName + ' embassy visa application');
+            const encodedAppt = encodeURIComponent(destName + ' visa appointment booking');
+            const applySearchUrl = `https://www.google.com/search?q=${encodedDest}`;
+            const apptSearchUrl = `https://www.google.com/search?q=${encodedAppt}`;
+
+            // Update text
+            const destSpan = document.getElementById('faDestinationA');
+            if (destSpan) destSpan.textContent = destName;
+
+            // Update links
+            const officialPortalLink = document.getElementById('officialPortalLink');
+            const applySearchLink = document.getElementById('applySearchLink');
+            const appointmentPortalLink = document.getElementById('appointmentPortalLink');
+            const appointmentSearchLink = document.getElementById('appointmentSearchLink');
+
+            if (officialPortalLink) {
+                if (portal) {
+                    officialPortalLink.href = portal;
+                    officialPortalLink.style.display = 'inline-block';
+                } else {
+                    officialPortalLink.href = applySearchUrl;
+                    officialPortalLink.textContent = 'Search official portal';
+                    officialPortalLink.style.display = 'inline-block';
+                }
+            }
+
+            if (applySearchLink) {
+                applySearchLink.href = applySearchUrl;
+                applySearchLink.style.display = 'inline-block';
+            }
+
+            if (appointmentPortalLink) {
+                if (appt) {
+                    appointmentPortalLink.href = appt;
+                    appointmentPortalLink.style.display = 'inline-block';
+                } else {
+                    appointmentPortalLink.href = apptSearchUrl;
+                    appointmentPortalLink.textContent = 'Search appointment';
+                    appointmentPortalLink.style.display = 'inline-block';
+                }
+            }
+
+            if (appointmentSearchLink) {
+                appointmentSearchLink.href = apptSearchUrl;
+                appointmentSearchLink.style.display = 'inline-block';
+            }
+
+            // Show section
+            if (section) {
+                section.style.display = 'block';
+            }
+        }
+
+        // Update approval chance display
+        function updateApprovalChance(percentage, checkedDocuments = [], requirements = null) {
+            const percentageElement = document.getElementById('approvalPercentage');
+            const descriptionElement = document.getElementById('chanceDescription');
+            
+            percentageElement.textContent = `${percentage}%`;
+            
+            // Update circle color based on percentage
+            const circle = document.querySelector('.chance-circle');
+            if (percentage >= 80) {
+                circle.style.background = 'conic-gradient(from 0deg, #48bb78 0%, #38a169 100%)';
+                descriptionElement.textContent = 'Excellent chances of approval!';
+            } else if (percentage >= 60) {
+                circle.style.background = 'conic-gradient(from 0deg, #ed8936 0%, #dd6b20 100%)';
+                descriptionElement.textContent = 'Good chances of approval.';
+            } else if (percentage >= 40) {
+                circle.style.background = 'conic-gradient(from 0deg, #f6ad55 0%, #ed8936 100%)';
+                descriptionElement.textContent = 'Moderate chances of approval.';
+            } else {
+                circle.style.background = 'conic-gradient(from 0deg, #f56565 0%, #e53e3e 100%)';
+                descriptionElement.textContent = 'Lower chances of approval. Consider additional documentation.';
+            }
+            
+            // Add document context to description
+            if (checkedDocuments && checkedDocuments.length > 0 && requirements) {
+                const allRequiredDocs = [
+                    ...requirements.base,
+                    ...requirements.purposeSpecific,
+                    ...requirements.countrySpecific,
+                    ...requirements.additional
+                ];
+                const documentPercentage = Math.round((checkedDocuments.length / allRequiredDocs.length) * 100);
+                descriptionElement.textContent += ` (Based on ${checkedDocuments.length} of ${allRequiredDocs.length} required documents - ${documentPercentage}% complete)`;
+            }
+        }
+
+        // Update document requirements
+        function updateDocumentRequirements(requirements, checkedDocuments = []) {
+            // Helper function to create list item with check status
+            function createListItem(req, isChecked) {
+                const li = document.createElement('li');
+                li.textContent = req;
+                if (isChecked) {
+                    li.style.background = '#e6fffa';
+                    li.style.borderLeftColor = '#38b2ac';
+                    li.style.color = '#2c7a7b';
+                    li.innerHTML = `<i class="fas fa-check" style="color: #38b2ac; margin-right: 0.5rem;"></i>${req}`;
+                }
+                return li;
+            }
+            
+            // Base requirements
+            const baseList = document.getElementById('baseRequirements');
+            baseList.innerHTML = '';
+            requirements.base.forEach(req => {
+                const isChecked = checkedDocuments.includes(req);
+                baseList.appendChild(createListItem(req, isChecked));
+            });
+            
+            // Purpose-specific requirements
+            const purposeList = document.getElementById('purposeRequirements');
+            purposeList.innerHTML = '';
+            if (requirements.purposeSpecific && requirements.purposeSpecific.length > 0) {
+                requirements.purposeSpecific.forEach(req => {
+                    const isChecked = checkedDocuments.includes(req);
+                    purposeList.appendChild(createListItem(req, isChecked));
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No additional purpose-specific requirements.';
+                li.style.fontStyle = 'italic';
+                li.style.color = '#718096';
+                purposeList.appendChild(li);
+            }
+            
+            // Country-specific requirements
+            const countryList = document.getElementById('countryRequirements');
+            countryList.innerHTML = '';
+            if (requirements.countrySpecific && requirements.countrySpecific.length > 0) {
+                requirements.countrySpecific.forEach(req => {
+                    const isChecked = checkedDocuments.includes(req);
+                    countryList.appendChild(createListItem(req, isChecked));
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No additional country-specific requirements.';
+                li.style.fontStyle = 'italic';
+                li.style.color = '#718096';
+                countryList.appendChild(li);
+            }
+            
+            // Additional requirements
+            const additionalList = document.getElementById('additionalRequirements');
+            additionalList.innerHTML = '';
+            if (requirements.additional && requirements.additional.length > 0) {
+                requirements.additional.forEach(req => {
+                    const isChecked = checkedDocuments.includes(req);
+                    additionalList.appendChild(createListItem(req, isChecked));
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No additional requirements.';
+                li.style.fontStyle = 'italic';
+                li.style.color = '#718096';
+                additionalList.appendChild(li);
+            }
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            // Remove active class from all tabs and panes
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+            
+            // Add active class to selected tab and pane
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // Show error message
+        function showError(message) {
+            // Create error notification
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-notification';
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #f56565;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(245, 101, 101, 0.3);
+                z-index: 10000;
+                max-width: 400px;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            
+            errorDiv.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(errorDiv);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                errorDiv.style.animation = 'slideOutRight 0.3s ease-in';
+                setTimeout(() => {
+                    if (errorDiv.parentNode) {
+                        errorDiv.parentNode.removeChild(errorDiv);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Helper functions
+        function getPurposeName(purpose) {
+            const purposes = {
+                'tourism': 'Tourism/Vacation',
+                'business': 'Business',
+                'study': 'Study/Education',
+                'work': 'Work/Employment',
+                'family': 'Family Visit',
+                'medical': 'Medical Treatment',
+                'transit': 'Transit',
+                'diplomatic': 'Diplomatic'
+            };
+            return purposes[purpose] || purpose;
+        }
+
+        function getDurationName(duration) {
+            const durations = {
+                'short': 'Short-term (up to 90 days)',
+                'medium': 'Medium-term (3-6 months)',
+                'long': 'Long-term (6+ months)'
+            };
+            return durations[duration] || duration;
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
