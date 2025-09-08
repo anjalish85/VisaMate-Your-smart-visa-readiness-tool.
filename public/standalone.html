@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visa Buddy - Check Requirements & Approval Chances</title>
+    <title>VisaMate - Check Requirements & Approval Chances</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
             <div class="header-content">
                 <div class="logo">
                     <i class="fas fa-passport"></i>
-                    <h1>Visa Portal</h1>
+                    <h1>VisaMate</h1>
                 </div>
                 <p class="header-subtitle">Check visa requirements and approval chances for any destination</p>
             </div>
@@ -273,7 +273,7 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
-                <p>&copy; 2025 Anjali Shaw. All rights reserved.</p>
+                <p>&copy; 2024 VisaMate. All rights reserved.</p>
                 <p class="disclaimer">
                     <i class="fas fa-exclamation-triangle"></i>
                     This information is for guidance only. Always check with official sources for the most current requirements.
@@ -415,11 +415,14 @@
                 });
             });
             
-            // Form validation
+            // Form validation and document checklist
             const formInputs = document.querySelectorAll('select');
             formInputs.forEach(input => {
                 input.addEventListener('change', function() {
                     validateForm();
+                    if (this.id === 'duration' && this.value) {
+                        showDocumentChecklist();
+                    }
                 });
             });
         }
@@ -477,6 +480,7 @@
             checklistContainer.appendChild(progressDiv);
             
             checklistSection.style.display = 'block';
+            checklistSection.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Update document progress
@@ -522,9 +526,8 @@
                 previewDiv = document.createElement('div');
                 previewDiv.id = 'approvalPreview';
                 previewDiv.style.cssText = `
-                    margin: 1rem auto 0;
+                    margin-top: 1rem;
                     padding: 1rem;
-                    max-width: 520px;
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                     color: white;
                     border-radius: 10px;
@@ -864,9 +867,6 @@
 
             // Update where to file and appointment info
             updateFilingAppointmentSection(results);
-            
-            // Render checklist at the end after results and keep scroll to it
-            showDocumentChecklist();
             
             // Show results section
             resultsSection.style.display = 'block';
