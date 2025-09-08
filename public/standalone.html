@@ -716,7 +716,9 @@
                 additional.push('English language proficiency proof');
             }
             
-            if (['DE', 'FR', 'IT', 'ES', 'NL'].includes(destinationCountry)) {
+            // Schengen logic: only suggest Schengen visa if home country is outside Schengen
+            const schengenCountries = new Set(['AT','BE','CZ','DE','DK','EE','ES','FI','FR','GR','HR','HU','IS','IT','LI','LT','LU','LV','MT','NL','NO','PL','PT','SE','SI','SK','CH']);
+            if (schengenCountries.has(destinationCountry) && !schengenCountries.has(homeCountry)) {
                 additional.push('Schengen visa application');
             }
             
