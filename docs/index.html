@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visa Portal - Check Requirements & Approval Chances</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-passport"></i>
+                    <h1>Visa Portal</h1>
+                </div>
+                <p class="header-subtitle">Check visa requirements and approval chances for any destination</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Visa Check Form -->
+            <section class="visa-form-section">
+                <div class="form-container">
+                    <h2>Visa Requirements Checker</h2>
+                    <form id="visaForm" class="visa-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="homeCountry">
+                                    <i class="fas fa-home"></i>
+                                    Home Country
+                                </label>
+                                <select id="homeCountry" name="homeCountry" required>
+                                    <option value="">Select your home country</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="destinationCountry">
+                                    <i class="fas fa-plane"></i>
+                                    Destination Country
+                                </label>
+                                <select id="destinationCountry" name="destinationCountry" required>
+                                    <option value="">Select destination country</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="purpose">
+                                    <i class="fas fa-briefcase"></i>
+                                    Purpose of Visit
+                                </label>
+                                <select id="purpose" name="purpose" required>
+                                    <option value="">Select purpose of visit</option>
+                                    <option value="tourism">Tourism/Vacation</option>
+                                    <option value="business">Business</option>
+                                    <option value="study">Study/Education</option>
+                                    <option value="work">Work/Employment</option>
+                                    <option value="family">Family Visit</option>
+                                    <option value="medical">Medical Treatment</option>
+                                    <option value="transit">Transit</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="duration">
+                                    <i class="fas fa-clock"></i>
+                                    Duration of Stay
+                                </label>
+                                <select id="duration" name="duration" required>
+                                    <option value="">Select duration</option>
+                                    <option value="short">Short-term (up to 90 days)</option>
+                                    <option value="medium">Medium-term (3-6 months)</option>
+                                    <option value="long">Long-term (6+ months)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-search"></i>
+                            Check Visa Requirements
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section" style="display: none;">
+                <div class="results-container">
+                    <!-- Approval Chances -->
+                    <div class="approval-chances">
+                        <h3>Visa Approval Chances</h3>
+                        <div class="chance-meter">
+                            <div class="chance-circle">
+                                <div class="chance-percentage" id="approvalPercentage">0%</div>
+                                <div class="chance-label">Approval Chance</div>
+                            </div>
+                            <div class="chance-description" id="chanceDescription">
+                                Based on your profile and destination
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visa Information -->
+                    <div class="visa-info">
+                        <h3>Visa Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <i class="fas fa-flag"></i>
+                                <div>
+                                    <strong>From:</strong>
+                                    <span id="homeCountryName">-</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-plane-departure"></i>
+                                <div>
+                                    <strong>To:</strong>
+                                    <span id="destinationCountryName">-</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-tag"></i>
+                                <div>
+                                    <strong>Purpose:</strong>
+                                    <span id="purposeName">-</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Duration:</strong>
+                                    <span id="durationName">-</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-file-alt"></i>
+                                <div>
+                                    <strong>Visa Type:</strong>
+                                    <span id="visaType">-</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <div>
+                                    <strong>Processing Time:</strong>
+                                    <span id="processingTime">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Document Requirements -->
+                    <div class="document-requirements">
+                        <h3>Required Documents</h3>
+                        <div class="requirements-tabs">
+                            <button class="tab-btn active" data-tab="base">Basic Requirements</button>
+                            <button class="tab-btn" data-tab="purpose">Purpose-Specific</button>
+                            <button class="tab-btn" data-tab="country">Country-Specific</button>
+                            <button class="tab-btn" data-tab="additional">Additional</button>
+                        </div>
+
+                        <div class="tab-content">
+                            <div id="base-tab" class="tab-pane active">
+                                <h4>Basic Requirements</h4>
+                                <ul id="baseRequirements" class="requirements-list">
+                                    <!-- Will be populated by JavaScript -->
+                                </ul>
+                            </div>
+                            <div id="purpose-tab" class="tab-pane">
+                                <h4>Purpose-Specific Requirements</h4>
+                                <ul id="purposeRequirements" class="requirements-list">
+                                    <!-- Will be populated by JavaScript -->
+                                </ul>
+                            </div>
+                            <div id="country-tab" class="tab-pane">
+                                <h4>Country-Specific Requirements</h4>
+                                <ul id="countryRequirements" class="requirements-list">
+                                    <!-- Will be populated by JavaScript -->
+                                </ul>
+                            </div>
+                            <div id="additional-tab" class="tab-pane">
+                                <h4>Additional Requirements</h4>
+                                <ul id="additionalRequirements" class="requirements-list">
+                                    <!-- Will be populated by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tips and Recommendations -->
+                    <div class="tips-section">
+                        <h3>Tips & Recommendations</h3>
+                        <div class="tips-grid">
+                            <div class="tip-card">
+                                <i class="fas fa-lightbulb"></i>
+                                <h4>Application Tips</h4>
+                                <ul>
+                                    <li>Apply well in advance of your travel date</li>
+                                    <li>Ensure all documents are properly translated</li>
+                                    <li>Double-check all information for accuracy</li>
+                                    <li>Keep copies of all submitted documents</li>
+                                </ul>
+                            </div>
+                            <div class="tip-card">
+                                <i class="fas fa-shield-alt"></i>
+                                <h4>Document Safety</h4>
+                                <ul>
+                                    <li>Make multiple copies of important documents</li>
+                                    <li>Store digital copies in cloud storage</li>
+                                    <li>Keep originals in a secure location</li>
+                                    <li>Carry copies separately from originals</li>
+                                </ul>
+                            </div>
+                            <div class="tip-card">
+                                <i class="fas fa-calendar-check"></i>
+                                <h4>Timeline Planning</h4>
+                                <ul>
+                                    <li>Check processing times before applying</li>
+                                    <li>Consider expedited processing if needed</li>
+                                    <li>Plan for potential delays</li>
+                                    <li>Book refundable travel arrangements</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2024 Visa Portal. All rights reserved.</p>
+                <p class="disclaimer">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    This information is for guidance only. Always check with official sources for the most current requirements.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Checking visa requirements...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
